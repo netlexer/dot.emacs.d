@@ -1,4 +1,4 @@
-;;; init.el --- Neil Woods's GNU Emacs init file.
+;;; init.el --- GNU Emacs init file. -*- lexical-binding: t -*-
 ;;
 ;; Filename: init.el
 ;; Description: GNU Emacs initialisation.
@@ -6,12 +6,12 @@
 ;; Created: Fri Oct 14 19:58:40 2016 (+0100)
 ;; Version: 20161015
 ;; Package-Requires: ()
-;; Last-Updated: Tue Oct 18 03:21:26 2016 (+0100)
+;; Last-Updated: Thu Oct 20 19:10:56 2016 (+0100)
 ;;           By: Neil Woods
-;;     Update #: 33
+;;     Update #: 52
 ;; URL: https://github.com/netlexer/dotfiles.git
 ;; Keywords: initialization, startup.
-;; Compatibility: GNU Emacs >= 24.3
+;; Compatibility: GNU Emacs >= 24.4
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -19,11 +19,6 @@
 ;; ideas from usenet, emacswiki, etc. This is a work-in-progress.
 ;; Renamed from ~/.emacs.
 ;; (c) Neil Woods, 1992-2016.
-;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;
-;;; Change Log:
-;;
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -47,36 +42,30 @@
 ;; default plus add melpa for latest elisp packages
 (add-to-list 'package-archives
   '("melpa" . "https://melpa.org/packages/") t)
-
-(unless package-archive-contents    ;; Refresh the packages descriptions
-  (package-refresh-contents))
-(setq package-load-list '(all))     ;; List of packages to load
+(require 'highline)
 (add-hook 'package-menu-mode-hook 'highline-mode)
 (package-initialize)
 
 ;;; load customizations.
-(setq custom-file "~/.emacs.d/custom.el")
+(setq custom-file (concat user-emacs-directory "custom.el"))
 (load custom-file)
 
-;; load a cool theme & mode-line
-(load-theme 'cyberpunk t)
-(setq sml/name-width 30
-      sml/mode-width 'full
-      sml/theme 'dark)
-(sml/setup)
-(load-theme 'smart-mode-line-powerline t)
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Set a few variables
+;;; Set a few variables
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (setq-default Info-directory-list '("/usr/local/share/info/" "/usr/share/info/")
+              apropos-do-all t
               backup-by-copying nil
               backup-by-copying-when-linked t
-              backup-directory-alist '(("." . "~/.backups"))
               column-number-mode t
-              custom-file "~/.emacs.d/custom.el"
+              custom-file (concat user-emacs-directory "custom.el")
               default-major-mode 'text-mode
               delete-old-versions t
               diary-file "~/.diary"
+              display-time-mode t
+              ediff-window-setup-function 'ediff-setup-windows-plain
               font-lock-maximum-decoration t
               frame-title-format '("emacs@" system-name " [%b]" )
               global-font-lock-mode t
@@ -91,11 +80,13 @@
               make-backup-files t
               max-mini-window-height 1
               mouse-autoselect-window -0.5
-              my-emacs-dir "~/.emacs.d/"
+              mouse-yank-at-point t
               next-line-add-newlines nil
               nw-identifier "Neil Woods <neil@netlexer.uk>"
+              require-final-newline t
               revert-without-query (cons "TAGS" revert-without-query)
               save-place t
+              save-place-file (concat user-emacs-directory "places")
               show-paren-mode t
               show-paren-style 'expression
               show-trailing-whitespace t
@@ -111,16 +102,41 @@
               x-use-old-gtk-file-dialog t)
 
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; load a cool theme & mode-line
+(load-theme 'cyberpunk t)
+(setq sml/name-width 32
+      sml/mode-width 'full
+      sml/theme 'dark)
+(sml/setup)
+
+(require 'pretty-lambdada)
+(pretty-lambda-for-modes)
+
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Convenience functions etc.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; better defaults
+(unless (fboundp 'helm-mode)
+  (ido-mode t)
+  (setq ido-enable-flex-matching t))
+;; this works well with smart-mode-line (sml)
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'forward)
+
+(autoload 'zap-up-to-char "misc"
+  "Kill up to, but not including ARGth occurrence of CHAR." t)
+
 ;; disable backups for files in /tmp or in my Mail or News directories.
 (defun nw-backup-enable-predicate (filename)
   (and (not (string= "/tmp/" (substring filename 0 5)))
        (not (string-match "~/Mail/" filename))
        (not (string-match "~/News/" filename))))
 (setq backup-enable-predicate 'nw-backup-enable-predicate)
+(setq backup-directory-alist `(("." . ,(concat user-emacs-directory
+                                               "backups"))))
 
 ;; Insert date/time string, bound to Meta-f9
 (defun nw-insert-time ()
@@ -162,7 +178,6 @@
       (message "buffer contains %d words." count))))
 
 ;; Query replace on region
-
 (defun query-replace-from-region (&optional to)
   (interactive "sQuery replace region with: ")
   (let ((from (buffer-substring (region-beginning)
@@ -266,6 +281,16 @@ by typing \\[beginning-of-line] \\[delete-line]."
     (progn
        (global-set-key "\e[V"  'scroll-down)
        (global-set-key "\e[U"  'scroll-up)))
+
+(global-set-key (kbd "M-/") 'hippie-expand)
+(global-set-key (kbd "C-x C-b") 'ibuffer)
+(global-set-key (kbd "M-z") 'zap-up-to-char)
+
+(global-set-key (kbd "C-s") 'isearch-forward-regexp)
+(global-set-key (kbd "C-r") 'isearch-backward-regexp)
+(global-set-key (kbd "C-M-s") 'isearch-forward)
+(global-set-key (kbd "C-M-r") 'isearch-backward)
+
 
 ;; Re-define the normal `save-buffers-kill-emacs' function when in X to
 ;; delete the current frame. Will NOT delete the LAST frame.
@@ -473,9 +498,6 @@ by typing \\[beginning-of-line] \\[delete-line]."
   "Simple mode for xmodmap files.")
 
 (add-hook 'find-file-hooks 'auto-insert)
-
-;; to add to auto-insert-alist, there's already a defun... needs work?
-(define-auto-insert 'sh-mode "Shell-script.inc" t)  ; in ~/emacs/insert/
 
 ;; Automatic opening of zipped files.
 (auto-compression-mode 1)
