@@ -4,120 +4,116 @@
 ;; Description: GNU Emacs initialisation.
 ;; Author: Neil Woods
 ;; Created: Fri Oct 14 19:58:40 2016 (+0100)
-;; Version: 20161015
+;; Version: 20161022
 ;; Package-Requires: ()
-;; Last-Updated: Thu Oct 20 19:10:56 2016 (+0100)
+;; Last-Updated: Fri Oct 21 01:46:24 2016 (+0100)
 ;;           By: Neil Woods
-;;     Update #: 52
+;;     Update #: 68
 ;; URL: https://github.com/netlexer/dotfiles.git
 ;; Keywords: initialization, startup.
 ;; Compatibility: GNU Emacs >= 24.4
 ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;; Commentary: Written originally for GNU Emacs (ver 19.x), with many
-;; ideas from usenet, emacswiki, etc. This is a work-in-progress.
-;; Renamed from ~/.emacs.
+;; Commentary:
+;;
+;; This is my personal startup file for GNU Emacs.  It has only recently
+;; been updated to version 25.1.1, though it should run fine on versions
+;; of GNU Emacs >= 24.4.
 ;; (c) Neil Woods, 1992-2016.
 ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;;; Code:
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Startup stuff & initialize variables
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Startup stuff
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Announce start of file loading...
 (message "Loading Emacs personal init file...")
-(let ((nw_dir (expand-file-name "~neil/.emacs.d/lisp")))
-  (if (file-exists-p nw_dir)
-      (progn (setq load-path (append (list nw_dir) load-path)))))
+(let ((nw_lisp (expand-file-name (concat user-emacs-directory "lisp"))))
+  (if (file-exists-p nw_lisp)
+      (progn (setq load-path (append (list nw_lisp) load-path)))))
 
-;; Initialise variable for, and load emacs-uptime. (M-x emacs-uptime)
-(defvar *emacs-start-time* (current-time) "blink-blink yawn")
-(require 'emacs-uptime)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (require 'package)
-;; default plus add melpa for latest elisp packages
+;; default ("gnu") and add melpa for latest elisp packages
 (add-to-list 'package-archives
   '("melpa" . "https://melpa.org/packages/") t)
 (require 'highline)
 (add-hook 'package-menu-mode-hook 'highline-mode)
 (package-initialize)
 
-;;; load customizations.
-(setq custom-file (concat user-emacs-directory "custom.el"))
-(load custom-file)
-
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Set a few variables
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(setq-default Info-directory-list '("/usr/local/share/info/" "/usr/share/info/")
-              apropos-do-all t
-              backup-by-copying nil
-              backup-by-copying-when-linked t
-              column-number-mode t
-              custom-file (concat user-emacs-directory "custom.el")
-              default-major-mode 'text-mode
-              delete-old-versions t
-              diary-file "~/.diary"
-              display-time-mode t
-              ediff-window-setup-function 'ediff-setup-windows-plain
-              font-lock-maximum-decoration t
-              frame-title-format '("emacs@" system-name " [%b]" )
-              global-font-lock-mode t
-              global-paren-face-mode t
-              hippie-expand-verbose t
-              icon-title-format '("[%b]")
-              inhibit-startup-screen t
-              initial-scratch-message nil
-              kept-new-versions 4
-              kept-old-versions 2
-              line-number-mode t
-              make-backup-files t
-              max-mini-window-height 1
-              mouse-autoselect-window -0.5
-              mouse-yank-at-point t
-              next-line-add-newlines nil
-              nw-identifier "Neil Woods <neil@netlexer.uk>"
-              require-final-newline t
-              revert-without-query (cons "TAGS" revert-without-query)
-              save-place t
-              save-place-file (concat user-emacs-directory "places")
-              show-paren-mode t
-              show-paren-style 'expression
-              show-trailing-whitespace t
-              system-time-locale "Europe/London"
-              tab-width 4
-              tab-stop-list (number-sequence 4 120 4)
-              indent-tabs-mode nil
-              transient-mark-mode t
-              use-dialog-box nil
-              use-file-dialog nil       ;; lines are set to t.
-              vc-follow-symlinks t      ;; avoid 'Symbolic link to Git-controlled
-              version-control t         ;; source file' messages, just do it.
-              x-use-old-gtk-file-dialog t)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(setq Info-directory-list '("/usr/local/share/info/" "/usr/share/info/")
+      apropos-do-all t
+      backup-by-copying nil
+      backup-by-copying-when-linked t
+      column-number-mode t
+      default-major-mode 'text-mode
+      delete-old-versions t
+      diary-file "~/.diary"
+      display-time-mode t
+      ediff-window-setup-function 'ediff-setup-windows-plain
+      font-lock-maximum-decoration t
+      frame-title-format '("emacs@" system-name " [%b]" )
+      global-font-lock-mode t
+      global-paren-face-mode t
+      hippie-expand-verbose t
+      icon-title-format '("[%b]")
+      inhibit-startup-screen t
+      initial-scratch-message nil
+      kept-new-versions 4
+      kept-old-versions 2
+      line-number-mode t
+      make-backup-files t
+      max-mini-window-height 1
+      mouse-autoselect-window -0.5
+      mouse-yank-at-point t
+      next-line-add-newlines nil
+      nw-identifier "Neil Woods <neil@netlexer.uk>"
+      require-final-newline t
+      revert-without-query (cons "TAGS" revert-without-query)
+      save-place t
+      save-place-file (concat user-emacs-directory "places")
+      show-paren-mode t
+      show-paren-ring-bell-on-mismatch t
+      show-paren-style 'expression
+      show-trailing-whitespace t
+      system-time-locale "Europe/London"
+      tab-width 4
+      tab-stop-list (number-sequence 4 120 4)
+      indent-tabs-mode nil
+      transient-mark-mode t
+      use-dialog-box nil
+      use-file-dialog nil       ;; lines are set to t.
+      vc-follow-symlinks t      ;; avoid 'Symbolic link to Git-controlled
+      version-control t         ;; source file' messages, just do it.
+      x-use-old-gtk-file-dialog t)
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; load a cool theme & mode-line
 (load-theme 'cyberpunk t)
 (setq sml/name-width 32
       sml/mode-width 'full
       sml/theme 'dark)
-(sml/setup)
+;; this needed to be loaded last (why?)
+;(sml/setup)
 
-(require 'pretty-lambdada)
-(pretty-lambda-for-modes)
+;;(require 'pretty-lambdada)
+;;(pretty-lambda-for-modes)
+
+(global-prettify-symbols-mode +1)
 
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Convenience functions etc.
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; better defaults
 (unless (fboundp 'helm-mode)
   (ido-mode t)
@@ -250,9 +246,9 @@ by typing \\[beginning-of-line] \\[delete-line]."
 
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Global Key assignments
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Set kp-enter  to `newline-and-indent' - globally; use the vector
 ;; definition -- this is also bound to C-j.
@@ -315,9 +311,9 @@ by typing \\[beginning-of-line] \\[delete-line]."
 (global-set-key (kbd "C-x g") 'magit-status)
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Dired / Ibuffer / Web
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (require 'dired-x)
 (add-hook 'dired-load-hook
           (lambda ()
@@ -357,9 +353,9 @@ by typing \\[beginning-of-line] \\[delete-line]."
 (setq ffap-url-regexp nil)           ; disable URL features in ffap
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Spell check & dictionary lookup
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Standard location of personal dictionary
 (setq ispell-personal-dictionary "~/.flydict")
@@ -384,9 +380,9 @@ by typing \\[beginning-of-line] \\[delete-line]."
 (global-set-key "\C-cm" 'dictionary-match-words)
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Completion modes: dabbrev, hippie-expand, complete, etc.
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Hippie expand enables completion of filenames/dirs in buffers
 (require 'hippie-exp)
@@ -412,9 +408,9 @@ by typing \\[beginning-of-line] \\[delete-line]."
 
 ;(require 'minibuf-electric-gnuemacs)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Parens, paredit & related, eldoc
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Define function to match a parenthesis otherwise insert a % (like vi !;-P )
 (global-set-key "%" 'match-paren)
 (defun match-paren (arg)
@@ -431,6 +427,9 @@ by typing \\[beginning-of-line] \\[delete-line]."
 (add-hook 'lisp-mode-hook             #'enable-paredit-mode)
 (add-hook 'lisp-interaction-mode-hook #'enable-paredit-mode)
 (add-hook 'scheme-mode-hook           #'enable-paredit-mode)
+;; paredit is great, but this aide-memoir is useful 
+(eval-after-load "paredit.el"
+    '(load 'paredit-menu))
 
 (require 'eldoc) ; if not already loaded
 (eldoc-add-command
@@ -458,9 +457,9 @@ by typing \\[beginning-of-line] \\[delete-line]."
 
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;  MODES & File HOOKS
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; really useful: M-. -> jump to definition of identifier at point
 ;;                M-, -> jump back.
 (require 'elisp-slime-nav)
@@ -471,7 +470,7 @@ by typing \\[beginning-of-line] \\[delete-line]."
 (require 'recentf)
 (recentf-mode 1)
 (savehist-mode 1)
-(require 'highline)           ;; used by (at least) mldonkey, gnus.
+(require 'highline)           ;; useful in gnus, ibuffer, etc.
 
 ;; EXtra modes for editing various generic UNIX specific files:
 (require 'generic-x)
@@ -573,9 +572,9 @@ by typing \\[beginning-of-line] \\[delete-line]."
 
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;   Programming: Haskell
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;Make Emacs look in Cabal directory for binaries
 (let ((my-cabal-path (expand-file-name "~/.cabal/bin")))
@@ -630,9 +629,9 @@ by typing \\[beginning-of-line] \\[delete-line]."
 (add-hook 'haskell-mode-hook (lambda () (ghc-init)))
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;   Programming: C/C++ modes.
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Use Gnu Coding Standards.
 ;; RET now works as C-j to re-indent & indent in C/C++ and related modes.
@@ -653,9 +652,9 @@ by typing \\[beginning-of-line] \\[delete-line]."
 	    (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
 	      (ggtags-mode 1))))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; rs-info: Enhancements to info (esp. with Gnus) by Reiner Steib
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (autoload 'rs-info-insert-current-node "rs-info"
   "Insert reference to current Info node using STYPE in buffer." t nil)
@@ -667,9 +666,9 @@ by typing \\[beginning-of-line] \\[delete-line]."
   "Insert a custom style info node for the top level form at point." t nil)
 (defalias 'boxquote-info 'rs-info-boxquote)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;  GENERAL: Menu Interface/Mouse related
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Disable menubar and toolbar on the console, enable menu under X.
 (menu-bar-mode 1)
 (setq window-system-default-frame-alist
@@ -699,5 +698,11 @@ by typing \\[beginning-of-line] \\[delete-line]."
 (setq system-time-locale "Europe/London")
 (prefer-coding-system 'utf-8)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; load customizations.
+(setq custom-file (expand-file-name (concat user-emacs-directory "custom.el")))
+(load custom-file)
+;; smart-mode-line -- loaded after custom file.
+(sml/setup)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; init.el ends here
