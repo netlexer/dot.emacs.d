@@ -6,10 +6,10 @@
 ;; Created: Fri Oct 14 19:58:40 2016 (+0100)
 ;; Version: 20161024
 ;; Package-Requires: ()
-;; Last-Updated: Wed Nov  2 09:24:35 2016 (+0000)
+;; Last-Updated: Wed Nov  2 19:59:24 2016 (+0000)
 ;;           By: Neil Woods
-;;     Update #: 222
-;; URL: https://github.com/netlexer/dotfiles.git
+;;     Update #: 223
+;; URL: https://github.com/netlexer/dot.emacs.d/blob/master/init.el
 ;; Keywords: initialization, startup.
 ;; Compatibility: GNU Emacs >= 24.4
 ;;
