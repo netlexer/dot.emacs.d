@@ -6,9 +6,9 @@
 ;; Created: Fri Oct 14 19:58:40 2016 (+0100)
 ;; Version: 20161024
 ;; Package-Requires: ()
-;; Last-Updated: Wed Nov  2 19:59:24 2016 (+0000)
+;; Last-Updated: Thu Nov  3 19:09:27 2016 (+0000)
 ;;           By: Neil Woods
-;;     Update #: 223
+;;     Update #: 229
 ;; URL: https://github.com/netlexer/dot.emacs.d/blob/master/init.el
 ;; Keywords: initialization, startup.
 ;; Compatibility: GNU Emacs >= 24.4
@@ -81,7 +81,7 @@
 (eyebrowse-mode t)
 (setq spaceline-workspace-numbers-unicode t
       spaceline-window-numbers-unicode t
-      spaceline-minor-modes-separator "/")
+      spaceline-minor-modes-separator "|")
 
 ;; display symbols like lambda as λ, for example.
 (global-prettify-symbols-mode +1)
@@ -523,7 +523,7 @@ print a message in the minibuffer with the result."
 ;; paredit is great, but this is a useful aide-memoir to learn it
 (eval-after-load 'paredit
   '(progn 
-     (diminish 'paredit-mode "PE")
+     (diminish 'paredit-mode "Ⓟ")
      (require 'paredit-menu)))
 
 (require 'eldoc) ; if not already loaded
@@ -798,10 +798,12 @@ print a message in the minibuffer with the result."
 
 (require 'diminish)
 
-(diminish 'paredit-mode "PE")
+(diminish 'auto-revert-mode)
+(diminish 'which-key-mode "Ⓦ")
+(diminish 'paredit-mode "Ⓟ")
 (diminish 'company-mode)
-(diminish 'elisp-slime-nav-mode "Sl")
-(diminish 'helm-mode "He")
+(diminish 'elisp-slime-nav-mode "Ⓢ")
+(diminish 'helm-mode "Ⓗ")
 
 
 
