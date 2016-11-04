@@ -6,9 +6,9 @@
 ;; Created: Fri Oct 14 19:58:40 2016 (+0100)
 ;; Version: 20161024
 ;; Package-Requires: ()
-;; Last-Updated: Thu Nov  3 19:09:27 2016 (+0000)
+;; Last-Updated: Fri Nov  4 02:46:03 2016 (+0000)
 ;;           By: Neil Woods
-;;     Update #: 229
+;;     Update #: 231
 ;; URL: https://github.com/netlexer/dot.emacs.d/blob/master/init.el
 ;; Keywords: initialization, startup.
 ;; Compatibility: GNU Emacs >= 24.4
@@ -70,7 +70,8 @@
 (require 'elisp-depend)
 
 ;; appearance: load a cool theme & mode-line
-(load-theme 'naquadah t)
+;;(load-theme 'naquadah t)
+(load-theme 'alect-black t)
 ;; I really like the spacemacs themeing; this is just the mode-line from it.
 ;; TODO: Spend more time configuring this.
 (require 'spaceline-config)

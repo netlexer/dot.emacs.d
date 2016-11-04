@@ -17,3 +17,5 @@ Emacs. If you put Emacs in a cup it becomes the cup, if you put into a
 bottle it becomes the bottle. You put Emacs into a teapot it becomes
 the teapot. Now, Emacs can flow or it can crash. Be Emacs, my friend.”*
 
+![Example screenshot](.screenshot.png "Example screenshot with alect-black theme and spaceline.")
+
