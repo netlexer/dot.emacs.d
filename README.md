@@ -13,9 +13,9 @@ recently discovered gems from the MELPA package archives.
 
 *“Don’t get set into one form, adapt it and build your own, and let it
 grow, be like Emacs. Empty your mind, be formless, shapeless — like
-Emacs. If you put Emacs in a cup it becomes the cup, if you put into a
-bottle it becomes the bottle. You put Emacs into a teapot it becomes
+Emacs. If you put Emacs in a cup it becomes the cup, if you put it into
+a bottle it becomes the bottle. You put Emacs into a teapot it becomes
 the teapot. Now, Emacs can flow or it can crash. Be Emacs, my friend.”*
 
-![Example screenshot](.screenshot.png "Example screenshot with alect-black theme and spaceline.")
+![Example screenshot](.screenshot.png "Example screenshot with alect-black theme and spaceline mode-line.")
 
