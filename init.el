@@ -6,9 +6,9 @@
 ;; Created: Fri Oct 14 19:58:40 2016 (+0100)
 ;; Version: 20161024
 ;; Package-Requires: ()
-;; Last-Updated: Fri Nov  4 02:46:03 2016 (+0000)
+;; Last-Updated: Fri Nov  4 03:50:25 2016 (+0000)
 ;;           By: Neil Woods
-;;     Update #: 231
+;;     Update #: 234
 ;; URL: https://github.com/netlexer/dot.emacs.d/blob/master/init.el
 ;; Keywords: initialization, startup.
 ;; Compatibility: GNU Emacs >= 24.4
@@ -431,9 +431,14 @@ print a message in the minibuffer with the result."
 ;; super-click-button-1 (Windows key + click btn 1 )
 (global-set-key [s-mouse-1] 'browse-url-at-mouse)
 
-;; turn on ffap (emacs-goodies) (best loaded after browse-url or w3)(drazi)
+;; turn on ffap (emacs-goodies) (best loaded after browse-url or w3)
 ;;(ffap-bindings)
 ;;(setq ffap-url-regexp nil)           ; disable URL features in ffap
+
+;; Setup ssh 
+(require 'exec-path-from-shell)
+(exec-path-from-shell-copy-env "SSH_AGENT_PID")
+(exec-path-from-shell-copy-env "SSH_AUTH_SOCK")
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
