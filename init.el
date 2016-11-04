@@ -6,9 +6,9 @@
 ;; Created: Fri Oct 14 19:58:40 2016 (+0100)
 ;; Version: 20161024
 ;; Package-Requires: ()
-;; Last-Updated: Fri Nov  4 03:50:25 2016 (+0000)
+;; Last-Updated: Fri Nov  4 05:14:58 2016 (+0000)
 ;;           By: Neil Woods
-;;     Update #: 234
+;;     Update #: 237
 ;; URL: https://github.com/netlexer/dot.emacs.d/blob/master/init.el
 ;; Keywords: initialization, startup.
 ;; Compatibility: GNU Emacs >= 24.4
@@ -256,9 +256,10 @@ This allow installation of org from melpa when :ensure is specified."
 
 (save-place-mode 1)
 
-;; disable backups for files in /tmp or in my Mail or News directories.
+;; disable backups for files, e.g. in /tmp or in my Mail or News directories.
 (defun nw-backup-enable-predicate (filename)
   (and (not (string= "/tmp/" (substring filename 0 5)))
+       (not (string-match "COMMIT_EDITMSG" filename))
        (not (string-match "~/Mail/" filename))
        (not (string-match "~/News/" filename))))
 (setq backup-enable-predicate 'nw-backup-enable-predicate)
