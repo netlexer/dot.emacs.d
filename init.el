@@ -6,9 +6,9 @@
 ;; Created: Fri Oct 14 19:58:40 2016 (+0100)
 ;; Version: 20161024
 ;; Package-Requires: ()
-;; Last-Updated: Fri Nov  4 05:14:58 2016 (+0000)
+;; Last-Updated: Fri Nov 25 04:59:07 2016 (+0000)
 ;;           By: Neil Woods
-;;     Update #: 237
+;;     Update #: 268
 ;; URL: https://github.com/netlexer/dot.emacs.d/blob/master/init.el
 ;; Keywords: initialization, startup.
 ;; Compatibility: GNU Emacs >= 24.4
@@ -69,9 +69,9 @@
 ;; useful to list the dependencies of an emacs lisp file.
 (require 'elisp-depend)
 
-;; appearance: load a cool theme & mode-line
+;; appearance: load a cool theme & mode-line (theme loaded via custom)
 ;;(load-theme 'naquadah t)
-(load-theme 'alect-black t)
+;;(load-theme 'alect-black t)
 ;; I really like the spacemacs themeing; this is just the mode-line from it.
 ;; TODO: Spend more time configuring this.
 (require 'spaceline-config)
@@ -82,7 +82,7 @@
 (eyebrowse-mode t)
 (setq spaceline-workspace-numbers-unicode t
       spaceline-window-numbers-unicode t
-      spaceline-minor-modes-separator "|")
+      spaceline-minor-modes-separator "/")
 
 ;; display symbols like lambda as λ, for example.
 (global-prettify-symbols-mode +1)
@@ -103,8 +103,9 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Use-package. (TODO: Convert rest of init to use this)
+;;; Use-package
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;  (TODO: Convert rest of init to use this)
 (eval-when-compile (require 'use-package))
 (setq use-package-verbose t)
 (defun advice--use-package-ensure-elpa (package &optional no-refresh)
@@ -158,13 +159,13 @@ This allow installation of org from melpa when :ensure is specified."
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Helm
+;;; Helm Configuration
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (require 'helm-config)
 (global-set-key (kbd "M-x") #'helm-M-x)
 (global-set-key (kbd "C-x r b") #'helm-filtered-bookmarks)
-;; (global-set-key (kbd "C-x C-f") #'helm-find-files)  
+;; (global-set-key (kbd "C-x C-f") #'helm-find-files)
 (helm-mode 1)
 ;; prefer ido to helm for find-file
 (add-to-list 'helm-completing-read-handlers-alist '(find-file . ido))
@@ -202,7 +203,7 @@ This allow installation of org from melpa when :ensure is specified."
       global-font-lock-mode t
       gc-cons-threshold 20000000
       icon-title-format '("[%b]")
-      inhibit-startup-screen t
+      inhibit-startup-screen nil
       initial-major-mode 'lisp-interaction-mode
       line-number-mode t
       max-mini-window-height 1
@@ -233,7 +234,7 @@ This allow installation of org from melpa when :ensure is specified."
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Convenience functions etc.
+;;; Convenience functions
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ido-mode is incompatable with helm.
 (unless (fboundp 'helm-mode)
@@ -326,11 +327,11 @@ print a message in the minibuffer with the result."
   "Insert a keystroke suitable for use in fcns like 'global-set-key'."
   (interactive "kInsert key chord: ")
   (insert (format "(kbd \"%s\")" (key-description key))))
-
+(global-set-key (kbd "C-x j") 'insert-sequence-key)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Global Key assignments
+;;; Global key assignments
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Set kp-enter  to `newline-and-indent' - globally; use the vector
@@ -341,7 +342,6 @@ print a message in the minibuffer with the result."
 ;; TODO: Make possibly better/useful bindings here...
 (global-set-key [f1]    'help-command)
 (global-set-key [S-f1]  'man)
-(global-set-key [ (control f1) ] 'info)
 (global-set-key [f2]    'start-kbd-macro)	; Also C-X(
 (global-set-key [f3]    'end-kbd-macro)		; Also C-X)
 (global-set-key [f4]    'call-last-kbd-macro)	; Also C-Xe
@@ -394,9 +394,10 @@ print a message in the minibuffer with the result."
 (global-set-key (kbd "C-x g") 'magit-status)
 
 
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Dired / Ibuffer / Web
+;;; Dired / Ibuffer / WWW
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (require 'dired-x)
 (add-hook 'dired-load-hook
@@ -425,7 +426,7 @@ print a message in the minibuffer with the result."
 
 ;; WWW -- Read URL's with specified browser
 (setq browse-url-browser-function 'browse-url-generic
-      browse-url-generic-program "/usr/bin/light")
+      browse-url-generic-program "/usr/bin/firefox")
 
 (global-set-key "\C-xm" 'browse-url-at-point)
 
@@ -443,7 +444,7 @@ print a message in the minibuffer with the result."
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Spell check & dictionary lookup
+;;; Spell checker / Dictionary lookup
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Standard location of personal dictionary
@@ -470,7 +471,7 @@ print a message in the minibuffer with the result."
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Completion modes: dabbrev, hippie-expand, complete, etc.
+;;; Completion: dabbrev, hippie-expand, complete
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Hippie expand enables completion of filenames/dirs in buffers
@@ -509,7 +510,7 @@ print a message in the minibuffer with the result."
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Parens, paredit & related, eldoc
+;;; Parens: Paredit & related / Eldoc
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Define function to match a parenthesis otherwise insert a % (like vi !;-P )
 (global-set-key "%" 'match-paren)
@@ -530,7 +531,7 @@ print a message in the minibuffer with the result."
 ;; paredit is great, but this is a useful aide-memoir to learn it
 (eval-after-load 'paredit
   '(progn 
-     (diminish 'paredit-mode "Ⓟ")
+     (diminish 'paredit-mode "Par")
      (require 'paredit-menu)))
 
 (require 'eldoc) ; if not already loaded
@@ -569,15 +570,8 @@ print a message in the minibuffer with the result."
 (require 'elisp-slime-nav)
 (dolist (hook '(emacs-lisp-mode-hook ielm-mode-hook))
   (add-hook hook 'turn-on-elisp-slime-nav-mode))
-
-;; Create a menu from matched section headers in this file. Bound to a local 
-;; key (C-*) at end of file.
-(add-hook 'emacs-lisp-mode-hook
-          (lambda ()
-            (when (string= (buffer-name) "init.el")
-              (setq imenu-generic-expression
-                    '((nil "^;\\{70,\\}\n;;; \\(.+\\)" 1))))))
-
+(define-key emacs-lisp-mode-map [(control f1)] 
+  'elisp-slime-nav-describe-elisp-thing-at-point)
 
 ;; Keep a list of recently opened files (kept across sessions, too!)
 (require 'recentf)
@@ -610,7 +604,7 @@ print a message in the minibuffer with the result."
   nil
   "Simple mode for xmodmap files.")
 
-(add-hook 'find-file-hooks 'auto-insert)
+;; (add-hook 'find-file-hooks 'auto-insert)
 
 ;; Automatic opening of zipped files.
 (auto-compression-mode 1)
@@ -649,6 +643,17 @@ print a message in the minibuffer with the result."
    "Major mode for editing GitHub Flavored Markdown files" t)
 (add-to-list 'auto-mode-alist '("README\\.md\\'" . gfm-mode))
 
+;; Support for blogging with jekyl and/or octapress
+(add-to-list 'auto-mode-alist '("\\.md$" . jekyll-markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.html" . jekyll-html-mode))
+
+(require 'octopress)
+(setq octopress-blog-root "~/proj/netlexer.github.io")
+
+;; Rust is a new multi-paradigm systems programming language. Keywords:
+;; compiled, concurrent, functional, imperative, structured, generic.
+(autoload 'rust-mode "rust-mode" nil t)
+(add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
 
 ;; A few variables which affect the *shell* (emacs terminal) in a window
 ;; (also includes the general 'comint' = COMMand INTerpreter functions).
@@ -683,6 +688,25 @@ print a message in the minibuffer with the result."
 (autoload 'auto-make-header "header2")
 (add-hook 'emacs-lisp-mode-hook 'auto-make-header)
 (add-hook 'c-mode-common-hook   'auto-make-header)
+
+(global-anzu-mode +1)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Info Enhancements 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; rs-info: Quote info excerpts, useful in Gnus (from Reiner Steib).
+
+(autoload 'rs-info-insert-current-node "rs-info"
+  "Insert reference to current Info node using STYPE in buffer." t nil)
+(autoload 'rs-info-boxquote "rs-info"
+  "Yank text (from an info node), box it and use current info node as title."
+  t nil)
+(autoload 'rs-info-reload "rs-info" "Reload current info node." t nil)
+(autoload 'rs-info-insert-node-for-variable "rs-info"
+  "Insert a custom style info node for the top level form at point." t nil)
+(defalias 'boxquote-info 'rs-info-boxquote)
+
+
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -743,7 +767,7 @@ print a message in the minibuffer with the result."
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Programming: C/C++ modes.
+;;; Programming: C/C++
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Use Gnu Coding Standards.
@@ -766,22 +790,19 @@ print a message in the minibuffer with the result."
 	      (ggtags-mode 1))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; rs-info: Enhancements to info (esp. with Gnus) by Reiner Steib
+;;; Menus / User Interface / Mouse
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(autoload 'rs-info-insert-current-node "rs-info"
-  "Insert reference to current Info node using STYPE in buffer." t nil)
-(autoload 'rs-info-boxquote "rs-info"
-  "Yank text (from an info node), box it and use current info node as title."
-  t nil)
-(autoload 'rs-info-reload "rs-info" "Reload current info node." t nil)
-(autoload 'rs-info-insert-node-for-variable "rs-info"
-  "Insert a custom style info node for the top level form at point." t nil)
-(defalias 'boxquote-info 'rs-info-boxquote)
+;; Create a menu from matched section headers in this file. Bound to C-f6.
+;; Alternatively, M-S-down-mouse-3 invokes a mouse menu. 
+(add-hook 'emacs-lisp-mode-hook
+          (lambda ()
+            (when (string= (buffer-name) "init.el")
+              (setq imenu-generic-expression
+                    '((nil "^;\\{70,\\}\n;;; \\(.+\\)" 1))))))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; GENERAL: Menu Interface/Mouse related
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(global-set-key [(control f6)] 'imenu)
+
 ;; Disable menubar and toolbar on the console, enable menu under X.
 (menu-bar-mode 1)
 (setq window-system-default-frame-alist
@@ -804,18 +825,18 @@ print a message in the minibuffer with the result."
 (put 'narrow-to-page 'disabled nil)
 
 (require 'diminish)
-
+(diminish 'anzu-mode)
 (diminish 'auto-revert-mode)
-(diminish 'which-key-mode "Ⓦ")
-(diminish 'paredit-mode "Ⓟ")
+(diminish 'which-key-mode "WK")
+(diminish 'paredit-mode "Par")
 (diminish 'company-mode)
-(diminish 'elisp-slime-nav-mode "Ⓢ")
-(diminish 'helm-mode "Ⓗ")
+(diminish 'elisp-slime-nav-mode "ES")
+(diminish 'helm-mode "H")
 
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Mule and UNICODE Support :: not needed, generally. (See earlier revs).
+;;; i18n & mule & UNICODE
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; but this is useful to define...
